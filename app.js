@@ -8,8 +8,23 @@ var passportLocalMongoose = require("passport-local-mongoose")
 
 mongoose.connect("mongodb://localhost/auth_demo_app")
 
+
+
 var app = express()
 app.set('view engine', 'ejs')
+
+app.use(require("express-session")({
+    secret: "Hello World",
+    resave: false,
+    saveUninitialized: false
+}))
+//Setting up passport
+app.use(passport.initialize())
+app.use(passport.session())
+
+//Takes data from session that is encoded and uncodes it
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
 
 app.get('/', function(req, res){
     res.render("home")
