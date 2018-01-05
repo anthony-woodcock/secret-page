@@ -42,6 +42,10 @@ app.get('/secret', function(req, res){
 app.get("/register", function(req, res){
     res.render("register")
 })
+//handling user sign up
+app.post("/register", function(req, res){
+    res.send("REGISTER POST ROUTE")
+})
 
 app.listen(3000, function(){
     console.log('Listening on localhost 3000')
