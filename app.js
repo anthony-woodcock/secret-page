@@ -74,6 +74,13 @@ app.post("/login",passport.authenticate("local",{
 }) ,function(req, res){
 })
 
+//logout route
+app.get("/logout", function(req, res){
+    //logout using passport
+    req.logout()
+    res.redirect("/")
+})
+
 app.listen(3000, function(){
     console.log('Listening on localhost 3000')
 })
