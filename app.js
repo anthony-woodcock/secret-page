@@ -23,6 +23,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 //Takes data from session that is encoded and uncodes it
+passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
@@ -58,6 +59,19 @@ app.post("/register", function(req, res){
             res.redirect("/secret")
         })
     })
+})
+
+// LOGIN ROUTES
+//render login form
+app.get("/login", function(req, res){
+    res.render("login")
+})
+//login logic
+//middleware
+app.post("/login",passport.authenticate("local",{
+    successRedirect: "/secret",
+    failureRedirect: "/login" 
+}) ,function(req, res){
 })
 
 app.listen(3000, function(){
