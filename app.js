@@ -12,7 +12,7 @@ mongoose.connect("mongodb://localhost/auth_demo_app")
 
 var app = express()
 app.set('view engine', 'ejs')
-
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(require("express-session")({
     secret: "Hello World",
     resave: false,
@@ -44,7 +44,20 @@ app.get("/register", function(req, res){
 })
 //handling user sign up
 app.post("/register", function(req, res){
-    res.send("REGISTER POST ROUTE")
+    req.body.username
+    req.body.password
+    //Make a new USer object. only pass in username, don't save the password to database
+    //returns a user
+    User.register(new User({username: req.body.username}), req.body.password, function(err, user){
+        if(err){
+            console.log(err)
+            return res.render()
+        }
+        //if no err, will log user in. Redirect to secret page
+        passport.authenticate("local")(req, res, function(){
+            res.redirect("/secret")
+        })
+    })
 })
 
 app.listen(3000, function(){
